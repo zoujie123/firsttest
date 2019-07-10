@@ -5,15 +5,14 @@ import numpy as np
 
 
 #打开一张图片，读入灰度图
-image_gray=cv2.imread("C:/Users/Administrator/Desktop/1.jpg",0)
+image_gray=cv2.imread("C:/Users/Administrator/Desktop/test1/1.jpg",0)
 #显示图像
-'''
+
 cv2.imshow('horse',image_gray)
 
-key=cv2.waitkey(0)
-if key==27:
-    cv2.destroyAllWindows()
-'''
+cv2.waitKey()
+cv2.destroyAllWindows()
+
 
 #获得图像的值类型
 print(image_gray.dtype)
@@ -23,10 +22,11 @@ height,width=image_gray.shape
 
 
 #显示彩色图像
-image=cv2.imread("C:/Users/Administrator/Desktop/2.jpg")
-'''
+image=cv2.imread("C:/Users/Administrator/Desktop/test1/2.jpg")
+
 cv2.imshow('horse_3',image)
-'''
+cv2.waitKey()
+cv2.destroyAllWindows()
 
 #获得图像尺寸
 print(image.shape)
@@ -35,11 +35,25 @@ print(image.shape)
 image_crop=image_gray[0:10,0:10]
 cv2.imshow('crop',image_crop)
 
+cv2.waitKey()
+cv2.destroyAllWindows()
+
 #图像通道分离
 R,G,B=cv2.split(image)
 cv2.imshow('R',R)
+
+cv2.waitKey()
+cv2.destroyAllWindows()
+
 cv2.imshow('G',G)
+
+cv2.waitKey()
+cv2.destroyAllWindows()
+
 cv2.imshow('B',B)
+
+cv2.waitKey()
+cv2.destroyAllWindows()
 
 #改变颜色值
 def random_color(image):
@@ -69,7 +83,7 @@ def random_color(image):
     else:
         l=0-g_change
         G[G>l]=0
-        G[R<=l]=(g_change+G[G<=l]).astype(image.dtype)
+        G[G<=l]=(g_change+G[G<=l]).astype(image.dtype)
     
     #b通道
     b_change=random.randint(-20,20)
@@ -85,22 +99,26 @@ def random_color(image):
         B[B<=l]=(b_change+B[B<=l]).astype(image.dtype)
         
     #
-    image_new=cv2.merge(R,G,B)
+    image_new=cv2.merge([R,G,B])
     return image_new
 
 #调用颜色改变函数
 image_change_color=random_color(image)
 cv2.imshow('image_change_color',image_change_color)
-
+cv2.waitKey()
+cv2.destroyAllWindows()
 #图像旋转
-image=cv2.imread("C:/Users/Administrator/Desktop/2.jpg",0)
+image=cv2.imread("C:/Users/Administrator/Desktop/test1/2.jpg",0)
+
 rotation=cv2.getRotationMatrix2D((image.shape[1]/2,image.shape[0]/2),60,1)#参数分别为图像宽高、旋转角度、尺度
 image_rotate=cv2.warpAffine(image,rotation,(image.shape[1],image.shape[0]))
 cv2.imshow('image_rotate',image_rotate)
+cv2.waitKey()
+cv2.destroyAllWindows()
 
 #映射变换
 def random_warp(image):
-    height,width,t=image.shape
+    height,width=image.shape
     
     random_m=20
     x1=random.randint(-random_m,random_m)
@@ -127,8 +145,8 @@ def random_warp(image):
     x44=random.randint(-random_m,random_m)
     y44=random.randint(height-random_m-1,height-1)
     
-    ps1=np.float16([x1,y1],[x2,y2],[x3,y3],[x4,y4])
-    ps2=np.float16([x11,y11],[x22,y22],[x33,y33],[x44,y44])
+    ps1=np.float32([[x1,y1],[x2,y2],[x3,y3],[x4,y4]])
+    ps2=np.float32([[x11,y11],[x22,y22],[x33,y33],[x44,y44]])
     
     w=cv2.getPerspectiveTransform(ps1,ps2)
     image_warp=cv2.warpPerspective(image,w,image.shape)
@@ -138,6 +156,8 @@ def random_warp(image):
 #旋转映射
 w,image_warp=random_warp(image)
 cv2.imshow('perspective_image',image_warp)
+cv2.waitKey()
+cv2.destroyAllWindows()
 
 
     
